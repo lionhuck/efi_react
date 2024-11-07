@@ -7,6 +7,11 @@ const UsersContainer = () =>{
     [loadingData,setLoadingData] = useState(true);
     const token = JSON.parse(localStorage.getItem('token'))
     const getDataUser = async () => {
+        if (!token) {
+            console.log("Token no encontrado");
+            setLoadingData(false);
+            return;
+        }
         try{
             
         const response = await fetch("http://localhost:5000/users",{
