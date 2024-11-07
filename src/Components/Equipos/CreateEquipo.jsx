@@ -102,7 +102,7 @@ const CreateEquipo = () => {
                                 name="modelo_id"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.costo}
+                                value={values.modelo_id}
                             />
                             <ErrorMessage name="modelo_id" component="div" />
                         </div>
@@ -114,7 +114,7 @@ const CreateEquipo = () => {
                                 name="categoria_id"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.costo}
+                                value={values.categoria_id}
                             />
                             <ErrorMessage name="categoria_id" component="div" />
                         </div>
