@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 
 
 
-const UsersView = ({loadingData, data}) => {
+const UsersView = ({data}) => {
     const bodyIsAdmin = (rowData) =>{
         return (
             rowData.is_admin === true ? <span>SI</span> : <span>NO</span>
