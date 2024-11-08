@@ -8,19 +8,20 @@ import { ToggleButton } from 'primereact/togglebutton';
 import { Formik } from "formik";
 import * as Yup from 'yup'
 
-const UsersView = ({ loadingUsers, dataUsers }) => {
+const UsersView = ({ loadingUsers, data }) => {
     const token = JSON.parse(localStorage.getItem('token'))
 
     const [openDialogEditUser, setOpenDialogEditUser] = useState(false)
     const [editUser, setEditUser] = useState({})
 
-const UsersView = ({data}) => {
     const bodyIsAdmin = (rowData) => {
         return (
             rowData.is_admin ? <span>Si</span> : <span>No</span>
         )
     }
 
+    console.log(editUser);
+    
     const bodyActions = (rowData) => {
         return (
             <div>
@@ -44,7 +45,7 @@ const UsersView = ({data}) => {
         }
 
         const response = await fetch(`http://127.0.0.1:5000/users/${editUser.id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: JSON.stringify(bodyEditUser),
             headers: {
                 'Content-Type': 'application/json',
@@ -67,17 +68,21 @@ const UsersView = ({data}) => {
 
     }
 
+    console.log(data);
+    
+
     return (
         <Fragment>
             {loadingUsers ?
                 <ProgressSpinner />
                 :
-                <DataTable value={dataUsers} tableStyle={{ minWidth: '50rem' }}>
-                    <Column field="username" header="Nombre de usuario"></Column>
+                <DataTable value={data} tableStyle={{ minWidth: '50rem' }}>
+                    <Column field="nombre" header="Nombre de usuario"></Column>
                     <Column field="is_admin" body={bodyIsAdmin} header="¿Es administrador?"></Column>
                     <Column body={bodyActions} header="Acciones"></Column>
                 </DataTable>
             }
+            {openDialogEditUser&&(
             <Dialog
                 visible={openDialogEditUser}
                 onHide={() => setOpenDialogEditUser(false)}
@@ -127,6 +132,7 @@ const UsersView = ({data}) => {
                 </Formik>
 
             </Dialog>
+            )}
         </Fragment>
     )
 }
