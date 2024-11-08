@@ -14,6 +14,7 @@ const UsersView = ({ loadingUsers, dataUsers }) => {
     const [openDialogEditUser, setOpenDialogEditUser] = useState(false)
     const [editUser, setEditUser] = useState({})
 
+const UsersView = ({data}) => {
     const bodyIsAdmin = (rowData) => {
         return (
             rowData.is_admin ? <span>Si</span> : <span>No</span>
