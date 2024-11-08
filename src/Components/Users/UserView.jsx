@@ -32,20 +32,20 @@ const UsersView = ({ loadingUsers, data }) => {
     }
 
     const ValidationSchema = Yup.object().shape({
-        username: Yup.string()
+        nombre: Yup.string()
             .required('Este campo es requerido')
-            .max(50, 'El username no debe ser mayor a 50 caracteres'),
+            .max(50, 'El nombre no debe ser mayor a 50 caracteres'),
     })
 
 
     const onEditUser = async (values) => {
         const bodyEditUser = {
-            username: values.username,
+            nombre: values.nombre,
             is_admin: values.is_admin
         }
 
         const response = await fetch(`http://127.0.0.1:5000/users/${editUser.id}`, {
-            method: 'POST',
+            method: 'PUT',
             body: JSON.stringify(bodyEditUser),
             headers: {
                 'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ const UsersView = ({ loadingUsers, data }) => {
                 header='Editar usuario'
             >
                 <Formik
-                    initialValues={{ is_admin: editUser.is_admin, username: editUser.username }}
+                    initialValues={{ is_admin: editUser.is_admin, nombre: editUser.nombre }}
                     validationSchema={ValidationSchema}
                 >
                     {({
@@ -108,12 +108,12 @@ const UsersView = ({ loadingUsers, data }) => {
                             </label>
                             <input
                                 type="text"
-                                name="username"
+                                name="nombre"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.username}
+                                value={values.nombre}
                             />
-                            {errors.username && touched.username && errors.username}
+                            {errors.nombre && touched.nombre && errors.nombre}
                             <label>
                                 ¿Es administrador?
                             </label>
@@ -124,7 +124,7 @@ const UsersView = ({ loadingUsers, data }) => {
                                 onLabel="Si"
                                 offLabel="No"
                             />
-                            <button type="button" onClick={() => onEditUser(values)} disabled={values.password === '' || values.username === '' || !isValid}>
+                            <button type="button" onClick={() => onEditUser(values)} disabled={values.password === '' || values.nombre === '' || !isValid}>
                                 Modificar usuario
                             </button>
                         </form>
