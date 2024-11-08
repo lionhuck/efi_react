@@ -8,19 +8,20 @@ import { ToggleButton } from 'primereact/togglebutton';
 import { Formik } from "formik";
 import * as Yup from 'yup'
 
-const UsersView = ({ loadingUsers, dataUsers }) => {
+const UsersView = ({ loadingUsers, data }) => {
     const token = JSON.parse(localStorage.getItem('token'))
 
     const [openDialogEditUser, setOpenDialogEditUser] = useState(false)
     const [editUser, setEditUser] = useState({})
 
-const UsersView = ({data}) => {
     const bodyIsAdmin = (rowData) => {
         return (
             rowData.is_admin ? <span>Si</span> : <span>No</span>
         )
     }
 
+    console.log(editUser);
+    
     const bodyActions = (rowData) => {
         return (
             <div>
@@ -31,15 +32,15 @@ const UsersView = ({data}) => {
     }
 
     const ValidationSchema = Yup.object().shape({
-        username: Yup.string()
+        nombre: Yup.string()
             .required('Este campo es requerido')
-            .max(50, 'El username no debe ser mayor a 50 caracteres'),
+            .max(50, 'El nombre no debe ser mayor a 50 caracteres'),
     })
 
 
     const onEditUser = async (values) => {
         const bodyEditUser = {
-            username: values.username,
+            nombre: values.nombre,
             is_admin: values.is_admin
         }
 
@@ -67,24 +68,28 @@ const UsersView = ({data}) => {
 
     }
 
+    console.log(data);
+    
+
     return (
         <Fragment>
             {loadingUsers ?
                 <ProgressSpinner />
                 :
-                <DataTable value={dataUsers} tableStyle={{ minWidth: '50rem' }}>
-                    <Column field="username" header="Nombre de usuario"></Column>
+                <DataTable value={data} tableStyle={{ minWidth: '50rem' }}>
+                    <Column field="nombre" header="Nombre de usuario"></Column>
                     <Column field="is_admin" body={bodyIsAdmin} header="¿Es administrador?"></Column>
                     <Column body={bodyActions} header="Acciones"></Column>
                 </DataTable>
             }
+            {openDialogEditUser&&(
             <Dialog
                 visible={openDialogEditUser}
                 onHide={() => setOpenDialogEditUser(false)}
                 header='Editar usuario'
             >
                 <Formik
-                    initialValues={{ is_admin: editUser.is_admin, username: editUser.username }}
+                    initialValues={{ is_admin: editUser.is_admin, nombre: editUser.nombre }}
                     validationSchema={ValidationSchema}
                 >
                     {({
@@ -103,12 +108,12 @@ const UsersView = ({data}) => {
                             </label>
                             <input
                                 type="text"
-                                name="username"
+                                name="nombre"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.username}
+                                value={values.nombre}
                             />
-                            {errors.username && touched.username && errors.username}
+                            {errors.nombre && touched.nombre && errors.nombre}
                             <label>
                                 ¿Es administrador?
                             </label>
@@ -119,7 +124,7 @@ const UsersView = ({data}) => {
                                 onLabel="Si"
                                 offLabel="No"
                             />
-                            <button type="button" onClick={() => onEditUser(values)} disabled={values.password === '' || values.username === '' || !isValid}>
+                            <button type="button" onClick={() => onEditUser(values)} disabled={values.password === '' || values.nombre === '' || !isValid}>
                                 Modificar usuario
                             </button>
                         </form>
@@ -127,6 +132,7 @@ const UsersView = ({data}) => {
                 </Formik>
 
             </Dialog>
+            )}
         </Fragment>
     )
 }
