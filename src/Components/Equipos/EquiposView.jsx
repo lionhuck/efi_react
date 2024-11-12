@@ -1,23 +1,22 @@
-import { Fragment, useState } from "react"
-import { ProgressSpinner } from "primereact/progressspinner"
+import { Fragment, useState, useRef } from "react";
+import { ProgressSpinner } from "primereact/progressspinner";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { ToggleButton } from 'primereact/togglebutton';
 import { Formik } from "formik";
-import * as Yup from 'yup'
+import { Toast } from 'primereact/toast';  // Importa Toast
+import * as Yup from 'yup';
 
 
 // const EquiposView = ({ loadingData, data, handleDelete, handleUpdate }) => {
 
 const EquiposView = ({ loadingData, data}) => {
     const token = JSON.parse(localStorage.getItem('token'))
-    
     const [openDialogEditEquipo, setOpenDialogEditEquipo] = useState(false)
-
     const [editEquipo, setEditEquipo] = useState({})
-
+    const toast = useRef(null);  // Define ref para Toast
 
 
     const bodyActions = (rowData) => {
@@ -53,10 +52,13 @@ const EquiposView = ({ loadingData, data}) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
-        })
+        });
 
-
-    }
+        if (response.ok) {
+            toast.current.show({ severity: 'success', summary: 'Equipo actualizado', detail: 'El equipo ha sido modificado exitosamente.' });
+            setTimeout(() => window.location.reload(), 1000);  // Recarga la página después de mostrar el mensaje
+            }
+        };
 
     const onDeleteEquipo = async (values) => {
         const response = await fetch(`http://localhost:5000/editar/${values.id}/equipos`, {
@@ -65,14 +67,18 @@ const EquiposView = ({ loadingData, data}) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
-        })
+        });
 
-
-    }
+        if (response.ok) {
+            toast.current.show({ severity: 'success', summary: 'Usuario eliminado', detail: 'El usuario ha sido eliminado exitosamente.' });
+            setTimeout(() => window.location.reload(), 1000);  // Recarga la página después de mostrar el mensaje
+            }
+        };
 
 
     return (
         <Fragment>
+            <Toast ref={toast} /> {/* Agrega el Toast */}
             {loadingData ? <ProgressSpinner /> 
             : data.length > 0 ? (
                 <DataTable value={data} paginator rows={10} tableStyle={{ minWidth: '50rem' }}>
