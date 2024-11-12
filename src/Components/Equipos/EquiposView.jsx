@@ -10,8 +10,6 @@ import { Toast } from 'primereact/toast';  // Importa Toast
 import * as Yup from 'yup';
 
 
-// const EquiposView = ({ loadingData, data, handleDelete, handleUpdate }) => {
-
 const EquiposView = ({ loadingData, data}) => {
     const token = JSON.parse(localStorage.getItem('token'))
     const [openDialogEditEquipo, setOpenDialogEditEquipo] = useState(false)
@@ -28,24 +26,13 @@ const EquiposView = ({ loadingData, data}) => {
         );
     };
 
-
-    // const bodyActions = (row) => {
-    //     return (
-    //         <div style={{ display: 'flex', gap: '0.5rem' }}>
-    //             <Button label="Update" onClick={() => handleUpdate(row.id)} />
-    //             <Button label="Delete" onClick={() => handleDelete(row.id)} />
-                
-    //         </div>
-    //     );
-    // };
-
     const onEditEquipo = async (values) => {
         const bodyEditEquipo = {
             nombre: values.nombre,
             costo: values.costo
         }
 
-        const response = await fetch(`http://localhost:5000/editar/${editEquipo.id}/equipos`, {
+        const response = await fetch(`http://localhost:5000/equipos/${editEquipo.id}`, {
             method: 'PUT',
             body: JSON.stringify(bodyEditEquipo),
             headers: {
@@ -61,7 +48,7 @@ const EquiposView = ({ loadingData, data}) => {
         };
 
     const onDeleteEquipo = async (values) => {
-        const response = await fetch(`http://localhost:5000/editar/${values.id}/equipos`, {
+        const response = await fetch(`http://localhost:5000/equipos/${values.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
